@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SalesWebApi.Models {
@@ -15,6 +16,8 @@ namespace SalesWebApi.Models {
         public int CustomerId { get; set; }
         public virtual Customer Customer { get; set; } // Denotes CustomerId as a Foreign Key to Customer
 
-        public Order() {}
+        public virtual IEnumerable<Orderline> Orderlines { get; set; } // Allow to ask ETF to fill in all the line items when read an order
+
+        public Order() { }
     }
 }

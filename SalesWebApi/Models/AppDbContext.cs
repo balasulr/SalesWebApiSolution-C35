@@ -6,6 +6,7 @@ namespace SalesWebApi.Models {
         // Defining Customer Model
         public virtual DbSet<Customer> Customers { get; set; } // Customers is the plural version
         public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<Orderline> Orderlines { get; set; }
         
         // Constructor with one parameter since don't need the default constructor
         public AppDbContext(DbContextOptions<AppDbContext> options): base(options) { }

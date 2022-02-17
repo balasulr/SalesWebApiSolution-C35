@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 using SalesWebApi.Models;
 
 namespace SalesWebApi.Controllers
@@ -18,6 +20,21 @@ namespace SalesWebApi.Controllers
             _context = context;
         }
 
+        // PUT: api/Orders/Recalc5 //// CReated this method and have to have different than other methods
+        [HttpPut("recalc/{orderId}")] //Inside Put is how it is different
+        public async Task<IActionResult> RecalculateOrder(int orderId) { // Define method. The I is a Interface
+            var order = await _context.Orders.FindAsync(orderId); // Read the order given passed order id
+
+            // Calculate sum of total of all line items with Quantity * Price
+            var sum = order.Orderlines.Sum(x => x.Quantity * x.Price); // This statement needs to be dubugged
+
+            order.Total = sum;
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         // GET: api/Orders
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders() {
@@ -27,8 +44,10 @@ namespace SalesWebApi.Controllers
         // GET: api/Orders/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrder(int id) {
-            var order = await _context.Orders.Include(x => x.Customer)
-                                .SingleOrDefaultAsync(x => x.Id == id); // Causes customer to show up in Postman and not be null
+            var order = await _context.Orders
+                                .Include(x => x.Customer) // Causes Customer to show up in Postman and not be null
+                                .Include(x => x.Orderlines) // Causes Orderlines to show up in Postman and not be null
+                                .SingleOrDefaultAsync(x => x.Id == id);
 
             if (order == null) {
                 return NotFound();
