@@ -2,39 +2,39 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 using SalesWebApi.Models;
 
-namespace SalesWebApi.Controllers
-{
+namespace SalesWebApi.Controllers {
+
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderlinesController : ControllerBase
-    {
+
+    public class OrderlinesController : ControllerBase {
         private readonly AppDbContext _context;
 
-        public OrderlinesController(AppDbContext context)
-        {
+        public OrderlinesController(AppDbContext context) {
             _context = context;
         }
 
         // GET: api/Orderlines
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Orderline>>> GetOrderlines()
-        {
+
+        public async Task<ActionResult<IEnumerable<Orderline>>> GetOrderlines() {
             return await _context.Orderlines.ToListAsync();
         }
 
         // GET: api/Orderlines/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Orderline>> GetOrderline(int id)
-        {
+
+        public async Task<ActionResult<Orderline>> GetOrderline(int id) {
             var orderline = await _context.Orderlines.FindAsync(id);
 
-            if (orderline == null)
-            {
+            if (orderline == null) {
                 return NotFound();
             }
 
@@ -44,27 +44,22 @@ namespace SalesWebApi.Controllers
         // PUT: api/Orderlines/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrderline(int id, Orderline orderline)
-        {
-            if (id != orderline.Id)
-            {
+
+        public async Task<IActionResult> PutOrderline(int id, Orderline orderline) {
+            if (id != orderline.Id) {
                 return BadRequest();
             }
 
             _context.Entry(orderline).State = EntityState.Modified;
 
-            try
-            {
+            try {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OrderlineExists(id))
-                {
+            catch (DbUpdateConcurrencyException) {
+                if (!OrderlineExists(id)) {
                     return NotFound();
                 }
-                else
-                {
+                else {
                     throw;
                 }
             }
@@ -75,8 +70,8 @@ namespace SalesWebApi.Controllers
         // POST: api/Orderlines
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Orderline>> PostOrderline(Orderline orderline)
-        {
+
+        public async Task<ActionResult<Orderline>> PostOrderline(Orderline orderline) {
             _context.Orderlines.Add(orderline);
             await _context.SaveChangesAsync();
 
@@ -85,11 +80,10 @@ namespace SalesWebApi.Controllers
 
         // DELETE: api/Orderlines/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrderline(int id)
-        {
+
+        public async Task<IActionResult> DeleteOrderline(int id) {
             var orderline = await _context.Orderlines.FindAsync(id);
-            if (orderline == null)
-            {
+            if (orderline == null) {
                 return NotFound();
             }
 
@@ -99,8 +93,7 @@ namespace SalesWebApi.Controllers
             return NoContent();
         }
 
-        private bool OrderlineExists(int id)
-        {
+        private bool OrderlineExists(int id) {
             return _context.Orderlines.Any(e => e.Id == id);
         }
     }

@@ -3,8 +3,8 @@
 namespace SalesWebApi.Models {
     
     public class AppDbContext : DbContext {
-        // Defining Customer Model
-        public virtual DbSet<Customer> Customers { get; set; } // Customers is the plural version
+        // Defining the Classes in the Models folder that was created
+        public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<Orderline> Orderlines { get; set; }
         

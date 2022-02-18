@@ -9,10 +9,11 @@ using Microsoft.EntityFrameworkCore;
 
 using SalesWebApi.Models;
 
-namespace SalesWebApi.Controllers
-{
+namespace SalesWebApi.Controllers {
+
     [Route("api/[controller]")]
     [ApiController]
+
     public class OrdersController : ControllerBase {
         private readonly AppDbContext _context;
 
@@ -22,6 +23,7 @@ namespace SalesWebApi.Controllers
 
         // PUT: api/Orders/Recalc5 //// CReated this method and have to have different than other methods
         [HttpPut("recalc/{orderId}")] //Inside Put is how it is different
+
         public async Task<IActionResult> RecalculateOrder(int orderId) { // Define method. The I is a Interface
             var order = await _context.Orders
                 .Include(x => x.Orderlines)
@@ -39,12 +41,14 @@ namespace SalesWebApi.Controllers
 
         // GET: api/Orders
         [HttpGet]
+
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders() {
             return await _context.Orders.Include(x => x.Customer).ToListAsync(); // Include will cause the JSON to show up for the customer in Postman
         }
 
         // GET: api/Orders/5
         [HttpGet("{id}")]
+
         public async Task<ActionResult<Order>> GetOrder(int id) {
             var order = await _context.Orders
                                 .Include(x => x.Customer) // Causes Customer to show up in Postman and not be null
@@ -61,6 +65,7 @@ namespace SalesWebApi.Controllers
         // PUT: api/Orders/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+
         public async Task<IActionResult> PutOrder(int id, Order order) {
             if (id != order.Id) {
                 return BadRequest();
@@ -86,6 +91,7 @@ namespace SalesWebApi.Controllers
         // POST: api/Orders
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+
         public async Task<ActionResult<Order>> PostOrder(Order order) {
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
@@ -95,6 +101,7 @@ namespace SalesWebApi.Controllers
 
         // DELETE: api/Orders/5
         [HttpDelete("{id}")]
+
         public async Task<IActionResult> DeleteOrder(int id) {
             var order = await _context.Orders.FindAsync(id);
             if (order == null) {
