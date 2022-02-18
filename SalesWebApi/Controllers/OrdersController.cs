@@ -23,10 +23,12 @@ namespace SalesWebApi.Controllers
         // PUT: api/Orders/Recalc5 //// CReated this method and have to have different than other methods
         [HttpPut("recalc/{orderId}")] //Inside Put is how it is different
         public async Task<IActionResult> RecalculateOrder(int orderId) { // Define method. The I is a Interface
-            var order = await _context.Orders.FindAsync(orderId); // Read the order given passed order id
+            var order = await _context.Orders
+                .Include(x => x.Orderlines)
+                .SingleOrDefaultAsync(x => x.Id == orderId); // Read the order given passed order id
 
             // Calculate sum of total of all line items with Quantity * Price
-            var sum = order.Orderlines.Sum(x => x.Quantity * x.Price); // This statement needs to be dubugged
+            var sum = order.Orderlines.Sum(x => x.Quantity * x.Price);
 
             order.Total = sum;
 
